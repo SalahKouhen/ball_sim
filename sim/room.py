@@ -11,7 +11,8 @@ class Room:
      Methods:
         - __init__:    Initialise all the fields of the class
     '''
-    def __init__(self, width: int, height: int) -> None:
+    def __init__(self, width: int, height: int, elast, fric) -> None:
         self.width = width # both are in pixels
         self.height = height
-
+        self.elast = elast # [up wall, right wall, down wall, left wall]
+        self.fric = fric
