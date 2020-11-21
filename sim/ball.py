@@ -20,25 +20,42 @@ class Ball:
         - __init__:    Initialise all the fields of the class
         - play:        Step the ball forward in time
     '''
-    def __init__(self, index: int, rad: int, pos, vel, elast, colour, room: Room) -> None:
+    def __init__(self, index: int, rad: int, pos, vel, force, mass, elast, colour, room: Room) -> None:
         self.index = index
         self.rad = rad # all in pixels
         self.pos = pos
         self.vel = vel
+        self.force = force
+        self.mass = mass
         self.room = room
         self.elast = elast
-        self.colour = colour
-        
+        self.colour = colour       
 
+    def exertForce(self, newForce) -> None:
+        self.force = newForce
+        
     def play2D(self, dt: float) -> None:
         '''Method to play forward the ball
 
         :param dt: size of time step 
         :returns: updates the value of position 
         '''
-        #Updates position and velocity under gravity
-        self.pos = np.array([ self.vel[0]*dt+self.pos[0], 0.5*10*dt**2 + self.vel[1]*dt + self.pos[1] ]) 
-        self.vel = np.array([ self.vel[0] , 10*dt + self.vel[1] ])
+        #Keep track of forces on ball
+        self.force = self.room.gravity #Gravity
+
+        #Friction
+        fricForce = 0
+        if self.rad + self.pos[1] == self.room.height: #floor
+            var = self.force[1]/self.mass*self.room.fric*dt
+            if abs(var) >= abs(self.vel[0]):
+                self.vel[0] =  0
+            elif(self.vel[0] > 0):
+                self.vel[0] += -np.sign(self.vel[0])*self.force[1]/self.mass*self.room.fric*dt
+        
+        #Updates position and velocity under force
+        self.pos = np.array([ 0.5*self.force[0]/self.mass*dt**2 + self.vel[0]*dt + self.pos[0], 0.5*self.force[1]/self.mass*dt**2 + self.vel[1]*dt + self.pos[1] ]) 
+        self.vel = np.array([ self.force[0]/self.mass*dt + self.vel[0] , self.force[1]/self.mass*dt + self.vel[1] ])
+        # Note positive direction in x is to the right and in y is downwards 
 
         #Basic bounce when hits one of four walls
         if self.rad + self.pos[1] > self.room.height: #floor
@@ -55,9 +72,3 @@ class Ball:
             self.vel[0] = -self.elast*self.room.elast[3]*self.vel[0]
             self.pos[0] = self.rad  
 
-        #Friction
-        if self.rad + self.pos[1] == self.room.height: #floor
-            var = -np.sign(self.vel[0])*10*self.room.fric*dt
-            if abs(var) > abs(self.vel[0]):
-                var = -self.vel[0]
-            self.vel[0] =  var + self.vel[0]
