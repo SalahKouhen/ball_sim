@@ -8,13 +8,11 @@ class Ball:
         - index:       Index of this ball
         - rad:         The shape of a ball, is a ball. What is it's radius?
         - pos:         Where the ball is
-        - vel:         How fast it's going (only in vertical direction for now)
+        - vel:         Speed (in any direction)
         - elast:       How bouncy the ball is
         - colour:      Array ie (255,255,255) to give the colour of the ball in RGB
         - room:        What room it is in 
-        TBA
-        - mass:        How massive the ball is
-        - vel:         Speed (in any direction)
+        - mass:        How massive the ball is       
 
      Methods:
         - __init__:    Initialise all the fields of the class
