@@ -1,8 +1,17 @@
 # Holds the visualisation code:
 # Idea is you will see a white room with lots of bouncy balls 
 
-#TBA
-# generalisation to shapes other than a circle
+#### PROJECT GOALS ####
+# See the difference in pressure caused by Bernoulli at a molecular level
+# The current code will only be in 2D, there should be a sequel in 3D
+# Home screen
+# tools to interact with balls: 
+#   - click to add ball specified by some sliders
+#   - draw in a wall
+#   - draw in a pressure measurement wall
+#   - output distribution of velocities - how does this change for a substance with difference mass particles inside?
+#   - virus transmission mode
+
 
 import pygame
 import pygame.freetype
