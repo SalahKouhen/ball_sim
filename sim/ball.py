@@ -6,7 +6,7 @@ class Ball:
     ''' Class to represent a bouncy ball. 
     Fields:
         - index:       Index of this ball
-        - rad:         The shape of a ball, is a ball. What is it's radius?
+        - rad:         The shape of a ball, is a ball. What is its radius?
         - pos:         Where the ball is
         - vel:         Speed (in any direction)
         - elast:       How bouncy the ball is
@@ -54,19 +54,5 @@ class Ball:
         self.pos = np.array([ 0.5*self.force[0]/self.mass*dt**2 + self.vel[0]*dt + self.pos[0], 0.5*self.force[1]/self.mass*dt**2 + self.vel[1]*dt + self.pos[1] ]) 
         self.vel = np.array([ self.force[0]/self.mass*dt + self.vel[0] , self.force[1]/self.mass*dt + self.vel[1] ])
         # Note positive direction in x is to the right and in y is downwards 
-
-        #Basic bounce when hits one of four walls
-        if self.rad + self.pos[1] > self.room.height: #floor
-            self.vel[1] = -self.elast*self.room.elast[2]*self.vel[1]
-            self.pos[1] = self.room.height - self.rad
-        elif self.pos[1] - self.rad  < 0: #ceiling
-            self.vel[1] = -self.elast*self.room.elast[0]*self.vel[1]
-            self.pos[1] = self.rad           
-
-        if self.rad + self.pos[0] > self.room.width: #right wall
-            self.vel[0] = -self.elast*self.room.elast[1]*self.vel[0]
-            self.pos[0] = self.room.width - self.rad
-        elif self.pos[0] - self.rad  < 0: #left wall
-            self.vel[0] = -self.elast*self.room.elast[3]*self.vel[0]
-            self.pos[0] = self.rad  
+ 
 
