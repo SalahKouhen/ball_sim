@@ -8,6 +8,7 @@ import pygame
 import pygame.freetype
 import time
 import numpy as np
+import math
 
 pygame.init()
 
@@ -21,7 +22,6 @@ blue = (0,0,255)
 #text
 myfont =pygame.freetype.Font(None, 30)
 text_surface, rect = myfont.render("Hello World!", (0, 100, 0)) #string, colour
-
 
 #create room
 from room import Room
@@ -37,34 +37,61 @@ n = 9 #number of balls
 balls = []
 balls.append(Ball(1, 15, np.array([our_Room.width/2,our_Room.height/2]), np.array([-30,0]), np.array([0,0]), 1, 1, red, our_Room))
 balls.append(Ball(2, 15, np.array([our_Room.width/4,our_Room.height/2]), np.array([30,0]), np.array([0,0]), 1, 1, blue, our_Room))
-balls.append(Ball(2, 15, np.array([3*our_Room.width/4,our_Room.height/2]), np.array([10,-10]), np.array([0,0]), 1, 1, green, our_Room))
-balls.append(Ball(2, 15, np.array([our_Room.width/2,3*our_Room.height/4]), np.array([10,30]), np.array([0,0]), 1, 1, green, our_Room))
-balls.append(Ball(2, 15, np.array([our_Room.width/4,3*our_Room.height/4]), np.array([-30,0]), np.array([0,0]), 0.1, 1, blue, our_Room))
-balls.append(Ball(2, 5, np.array([3*our_Room.width/4,3*our_Room.height/4]), np.array([10,0]), np.array([0,0]), 1, 1, black, our_Room))
-balls.append(Ball(2, 15, np.array([our_Room.width/2,our_Room.height/4]), np.array([10,25]), np.array([0,0]), 1, 1, green, our_Room))
-balls.append(Ball(2, 15, np.array([our_Room.width/4,our_Room.height/4]), np.array([-30,0]), np.array([0,0]), 0.1, 1, blue, our_Room))
-balls.append(Ball(2, 5, np.array([3*our_Room.width/4,our_Room.height/4]), np.array([10,11]), np.array([0,0]), 1, 1, black, our_Room))
+balls.append(Ball(3, 15, np.array([3*our_Room.width/4,our_Room.height/2]), np.array([10,-10]), np.array([0,0]), 1, 1, green, our_Room))
+balls.append(Ball(4, 15, np.array([our_Room.width/2,3*our_Room.height/4]), np.array([10,30]), np.array([0,0]), 1, 1, green, our_Room))
+balls.append(Ball(5, 15, np.array([our_Room.width/4,3*our_Room.height/4]), np.array([-30,0]), np.array([0,0]), 0.1, 1, blue, our_Room))
+balls.append(Ball(6, 5, np.array([3*our_Room.width/4,3*our_Room.height/4]), np.array([10,0]), np.array([0,0]), 1, 1, black, our_Room))
+balls.append(Ball(7, 15, np.array([our_Room.width/2,our_Room.height/4]), np.array([10,25]), np.array([0,0]), 1, 1, green, our_Room))
+balls.append(Ball(8, 15, np.array([our_Room.width/4,our_Room.height/4]), np.array([-30,0]), np.array([0,0]), 0.1, 1, blue, our_Room))
+balls.append(Ball(9, 5, np.array([3*our_Room.width/4,our_Room.height/4]), np.array([10,11]), np.array([0,0]), 1, 1, black, our_Room))
+
+clicked_balls = []
+
+#Add mode
+addFlag = 0
 
 #import function for dealing with collisions
 from collisions import collide
 
 while True:
     for event in pygame.event.get():
+        
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            pos = pygame.mouse.get_pos()
+            
+            if addFlag == 1:
+
+
+            for b in balls:
+                if math.sqrt((b.pos[0]-pos[0])**2+(b.pos[1]-pos[1])**2) <= b.rad:
+                    clicked_balls.append(balls.index(b))
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                # adding mode
+                addFlag = (addFlag + 1)%2
+                # display on screen that you are in adding mode
+
 
     #find out if any collisions occoured 
     collide(balls)
 
     #Funk around with gravity
-    our_Room.spinShipCrash(1/2000)
+    #our_Room.spinShipCrash(1/2000)
 
     for i in range(n):
         balls[i].play2D(0.1)
         pygame.draw.circle(gameDisplay, balls[i].colour, (round(balls[i].pos[0]),round(balls[i].pos[1])), balls[i].rad)
     
     gameDisplay.blit(text_surface, (40, 250)) #hello world text output
+
+    for i in clicked_balls:
+        ballinfo, rect = myfont.render(str(np.dot(balls[i].vel,balls[i].vel)), black)
+        gameDisplay.blit(ballinfo, (round(balls[i].pos[0]),round(balls[i].pos[1]))) #ball 1 label text
 
     '''
     #Bug fixing, labels each ball with properties it has

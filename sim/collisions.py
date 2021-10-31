@@ -22,25 +22,25 @@ def collide(balls):
                 #They are only going to be able to do this along the line between their centres <- why? Because otherwise there would be torques involved
                 #and I am assuming that doesn't happen
                 #So the momentum goes up for one ball and down for the other by some vector M
-                #Specifically we add M to ball 1's momentum and minus if from ball 2
+                #Specifically we add M to ball 1's momentum and minus it from ball 2
                 #M is a * (cos theta, sin theta) for some a 
-                #cos theta is the x distance betwee the centres divided by the length between them
+                #cos theta is the x distance between the centres divided by the length between them
                 #I calculated (by conserving kinetic energy) that a * (1/m1 + 1/m2) = 2(u2 cos + v2 sin - u1 cos - v1 sin) 
                 #The velocity is then updated by adding and subtracting M/relevant m
                 vdis = balls[j].pos - balls[i].pos
-                print(vdis)
+                #print(vdis)
                 dist = (vdis[0]**2+vdis[1]**2)**0.5
-                print(dist)
+                #print(dist)
                 vtrig = vdis/dist
-                print(vtrig)
+                #print(vtrig)
                 a =  2/(1/balls[j].mass + 1/balls[i].mass) * np.dot((balls[j].vel - balls[i].vel),vtrig) 
-                print(a)
+                #print(a)
                 vM = a * vtrig
-                print(vM)
-                print(balls[i].vel)
+                #print(vM)
+                #print(balls[i].vel)
                 balls[i].vel += vM/balls[i].mass
                 balls[j].vel -= vM/balls[j].mass
-                print(balls[i].vel)
+                #print(balls[i].vel)
 
                 #Need to stop balls intersecting
                 #Idea is we compare x and y pos of centres to what they should be and correct by adding half that distance to each

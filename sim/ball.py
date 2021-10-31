@@ -19,7 +19,7 @@ class Ball:
         - play:        Step the ball forward in time
     '''
     def __init__(self, index: int, rad: int, pos, vel, force, mass, elast, colour, room: Room) -> None:
-        self.index = index
+        self.index = index # Not really used right now (instead balls.index may be used as easy), may think of reason to have it later
         self.rad = rad # all in pixels
         self.pos = pos
         self.vel = vel
